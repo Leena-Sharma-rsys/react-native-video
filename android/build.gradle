@@ -5,6 +5,7 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
+    // ndkVersion safeExtGet('ndkVersion', "21.4.7075529")
     compileSdkVersion safeExtGet('compileSdkVersion', 31)
     buildToolsVersion safeExtGet('buildToolsVersion', '30.0.2')
 
