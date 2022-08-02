@@ -2,7 +2,7 @@
     "name": "react-native-video",
     "version": "6.0.0-alpha.1",
     "description": "A <Video /> element for react-native",
-    "main": "Video.js",
+    "main": "index.js",
     "license": "MIT",
     "author": "Community Contributors",
     "repository": {
@@ -41,6 +41,9 @@
         "react-native-video.podspec",
         "webpack.config.js",
         "index.web.js",
-        "index.html"
+        "index.html",
+        "Video.App.js",
+        "Video.Web.js",
+        "index.js"
     ]
 }
