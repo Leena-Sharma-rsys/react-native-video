@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Platform} from 'react-native';
-import WebPlayer from './Video.web';
+import AppPlayer from './Video.App';
 console.log("Platform.OS", Platform.OS)
 // const Module = Platform.OS === 'web' ? require('./Video.web') : require('./Video.App')
 
@@ -11,7 +11,7 @@ export default class Player extends Component {
   }
 
   render() {
-    return <WebPlayer />
+    return <AppPlayer />
     
   }
 }
