@@ -44,6 +44,6 @@
         "index.html",
         "Video.App.js",
         "Video.Web.js",
-        "index.js"
+        "index.ios.js"
     ]
 }
