@@ -11,7 +11,7 @@ export default class Player extends Component {
   }
 
   render() {
-    return <WebPlayer />
+    return <WebPlayer {...props} />
     
   }
 }
