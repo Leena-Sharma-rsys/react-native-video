@@ -43,7 +43,7 @@
         "index.web.js",
         "index.html",
         "Video.App.js",
-        "Video.Web.js",
-        "index.ios.js"
+        "index.ios.js",
+        "web"
     ]
 }
