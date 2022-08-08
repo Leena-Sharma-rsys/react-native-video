@@ -4,7 +4,7 @@ import WebVideo from "./video.web"
 export default function WebPlayer(props) {
     
     return (
-        <WebVideo {...props} />
+        <WebVideo {...props.webConfig} src={props.src} />
     );
 
 }
