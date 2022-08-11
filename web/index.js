@@ -6,11 +6,11 @@ import { View, Button } from 'react-native';
 // import { VASTClient } from '@dailymotion/vast-client'
 // import { playAds, init } from "./scripting";
 // import "shaka-player/dist/controls.css";
-import ShakaPlayer from 'shaka-player-react';
-import shaka from 'shaka-player';
+// import ShakaPlayer from 'shaka-player-react';
+// import shaka from 'shaka-player';
 
-import 'shaka-player/dist/controls.css';
-import 'shaka-player-react/dist/controls.css';
+// import 'shaka-player/dist/controls.css';
+// import 'shaka-player-react/dist/controls.css';
 let adsManager;
 let adsLoader;
 let adDisplayContainer;
