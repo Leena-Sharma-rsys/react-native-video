@@ -1,12 +1,25 @@
 
-import React, {useState, useEffect, useRef, createRef} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
+import React, { useState } from 'react';
+import { View, Button } from 'react-native';
 
-import {Button} from 'react-native-web';
-import WebVideo from "./video.web"
+// import { VASTClient } from '@dailymotion/vast-client'
+// import { playAds, init } from "./scripting";
+// import "shaka-player/dist/controls.css";
+import ShakaPlayer from 'shaka-player-react';
+import shaka from 'shaka-player';
+
+import 'shaka-player/dist/controls.css';
+import 'shaka-player-react/dist/controls.css';
+let adsManager;
+let adsLoader;
+let adDisplayContainer;
+let intervalTimer;
+let playButton;
+let videoContent;
+
 export default function WebPlayer(props) {
-   const adContainerRef = React.useRef(null);
+  const adContainerRef = React.useRef(null);
   const contentRef = React.useRef(null);
   let [mainPlayer, setMainPlayer] = useState({});
 
@@ -196,6 +209,7 @@ export default function WebPlayer(props) {
       <View id="mainContainer" >
         <View>
         <WebVideo {...props.webConfig} ref={contentRef} src={props.source.url} controls={props.controls} />
+
           {/* <ShakaPlayer
             src={
               "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
@@ -210,8 +224,4 @@ export default function WebPlayer(props) {
       <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()} id="playButton" title='Play' />
     </View>
   );
-    // return (
-       
-    // );
-
 }
