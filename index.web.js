@@ -10,6 +10,6 @@ export default class Player extends Component {
   }
 
   render() {
-    return <WebPlayer {...props} />
+    return <WebPlayer {...this.props} />
   }
 }

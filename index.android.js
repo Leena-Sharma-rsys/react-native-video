@@ -11,7 +11,7 @@ export default class AndroidPlayer extends Component {
   }
 
   render() {
-    return <AppAndroidPlayer />
+    return <AppAndroidPlayer {...this.props} />
     
   }
 }
