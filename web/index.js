@@ -1,5 +1,9 @@
 
-import React, { useState } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+
+
+import {Button} from 'react-native-web';
 import WebVideo from "./video.web"
 export default function WebPlayer(props) {
    const adContainerRef = React.useRef(null);
