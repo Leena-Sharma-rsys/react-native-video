@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { View, Button } from 'react-native';
-
+import WebVideo from './video.web'
 // import { VASTClient } from '@dailymotion/vast-client'
 // import { playAds, init } from "./scripting";
 // import "shaka-player/dist/controls.css";
