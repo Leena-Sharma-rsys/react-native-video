@@ -56,8 +56,8 @@ export default function WebPlayer(props) {
     contentRef.current.videoElement.onended = contentEndedListener;
     // Request video ads.
     const adsRequest = new window.google.ima.AdsRequest();
-    adsRequest.adTagUrl = `https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
-    // adsRequest.adTagUrl = `https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/simid&description_url=https%3A%2F%2Fdevelopers.google.com%2Finteractive-media-ads&sz=640x480&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`
+    // adsRequest.adTagUrl = props.webConfig.adsUrl;
+    adsRequest.adTagUrl = `https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/simid&description_url=https%3A%2F%2Fdevelopers.google.com%2Finteractive-media-ads&sz=640x480&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`
     // Specify the linear and nonlinear slot sizes. This helps the SDK to
     // select the correct creative if multiple are returned.
     adsRequest.linearAdSlotWidth = window.screen.availWidth;
@@ -139,7 +139,7 @@ export default function WebPlayer(props) {
   function onAdEvent(adEvent) {
     // Retrieve the ad from the event. Some events (e.g. ALL_ADS_COMPLETED)
     // don't have ad object associated.
-    console.log("here in adEvent", adEvent)
+    // console.log("here in adEvent", adEvent)
     const ad = adEvent.getAd();
     switch (adEvent.type) {
       case window.google.ima.AdEvent.Type.LOADED:
@@ -161,8 +161,6 @@ export default function WebPlayer(props) {
       case window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
       case window.google.ima.AdEvent.Type.COMPLETE:
         {
-          console.log("window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED", contentRef.current, adContainerRef.current.style)
-
           adContainerRef.current.style.display = "none"
 
           contentRef.current.videoElement.play();
@@ -187,6 +185,7 @@ export default function WebPlayer(props) {
    * Pauses video content and sets up ad UI.
    */
   function onContentPauseRequested() {
+    // console.log("contentRef check", contentRef.current)
     contentRef.current.videoElement.pause();
   }
 
@@ -208,11 +207,11 @@ export default function WebPlayer(props) {
     <View>
       <View id="mainContainer" >
         <View>
-        <WebVideo {...props.webConfig} ref={contentRef} src={props.source.url} controls={props.controls} />
-
+        {/* <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> */}
+        <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> 
           {/* <ShakaPlayer
             src={
-              "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+              props.source.uri
             }
             ref={contentRef}
             controls
@@ -221,7 +220,11 @@ export default function WebPlayer(props) {
         </View>
         <View ref={adContainerRef} style={{ top: 0, zIndex: 100, position: "absolute", color: 'red' }}></View>
       </View>
-      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()} id="playButton" title='Play' />
+      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()}  title='Play' />
+      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => contentRef.current.videoElement.play()}  title='Play Video' />
+
+      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => contentRef.current.videoElement.pause()}  title='Pause Video' />
+
     </View>
   );
 }

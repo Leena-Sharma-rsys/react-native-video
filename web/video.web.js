@@ -1,27 +1,18 @@
-// import React, {useState} from 'react';
-// import {View, Button} from 'react-native';
-// import ShakaPlayer from 'shaka-player-react';
 // import shaka from 'shaka-player/dist/shaka-player.ui';
-
-// import 'shaka-player/dist/controls.css';
-// import 'shaka-player-react/dist/controls.css';
+// import React from 'react';
 
 // /**
 //  * A React component for shaka-player.
 //  * @param {string} src
 //  * @param {shaka.extern.PlayerConfiguration} config
 //  * @param {boolean} autoPlay
-//  * @param {object} headers
 //  * @param {number} width
 //  * @param {number} height
 //  * @param ref
 //  * @returns {*}
 //  * @constructor
 //  */
-// function WebPlayer(
-//   {src, config, chromeless, className, headers, ...rest},
-//   ref,
-// ) {
+// function ShakaPlayer({ src, config, chromeless, className, ...rest }, ref) {
 //   const uiContainerRef = React.useRef(null);
 //   const videoRef = React.useRef(null);
 
@@ -40,7 +31,7 @@
 //       const ui = new shaka.ui.Overlay(
 //         player,
 //         uiContainerRef.current,
-//         videoRef.current,
+//         videoRef.current
 //       );
 //       setUi(ui);
 //     }
@@ -56,28 +47,9 @@
 //   // Keep shaka.Player.configure in sync.
 //   React.useEffect(() => {
 //     if (player && config) {
-//       console.log('here in confif', config);
 //       player.configure(config);
 //     }
 //   }, [player, config]);
-
-//   React.useEffect(() => {
-//     if (player && headers) {
-//       player
-//         .getNetworkingEngine()
-//         .registerRequestFilter(function (type, request) {
-//           console.log(
-//             'type',
-//             type,
-//             shaka.net.NetworkingEngine.RequestType.LICENSE,
-//           );
-//           if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
-//             request.headers[Object.keys(headers)[0]] =
-//               Object.values(headers)[0];
-//           }
-//         });
-//     }
-//   }, [player, headers]);
 
 //   // Load the source url when we have one.
 //   React.useEffect(() => {
@@ -98,9 +70,9 @@
 //       },
 //       get videoElement() {
 //         return videoRef.current;
-//       },
+//       }
 //     }),
-//     [player, ui],
+//     [player, ui]
 //   );
 
 //   return (
@@ -109,7 +81,7 @@
 //         ref={videoRef}
 //         style={{
 //           maxWidth: '100%',
-//           width: '100%',
+//           width: '100%'
 //         }}
 //         {...rest}
 //       />
@@ -117,15 +89,12 @@
 //   );
 // }
 
-// export default React.forwardRef(WebPlayer);
+// export default React.forwardRef(ShakaPlayer);
 
-import React, {useState} from 'react';
-import {View, Button} from 'react-native';
-import ShakaPlayer from 'shaka-player-react';
+
+import React from 'react';
 import shaka from 'shaka-player/dist/shaka-player.ui';
-
 import 'shaka-player/dist/controls.css';
-import 'shaka-player-react/dist/controls.css';
 
 /**
  * A React component for shaka-player.
@@ -223,7 +192,7 @@ function WebPlayer(
     }),
     [player, ui],
   );
-
+    console.log('refereomh ', ref, videoRef)
   return (
     <div ref={uiContainerRef} className={className}>
       <video
