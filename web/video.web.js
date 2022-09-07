@@ -99,7 +99,7 @@ import 'shaka-player/dist/controls.css';
 /**
  * A React component for shaka-player.
  * @param {string} src
- * @param {shaka.extern.PlayerConfiguration} config
+ * @param {shaka.extern.PlayerConfiguration} coßnfig
  * @param {boolean} autoPlay
  * @param {object} headers
  * @param {number} width
