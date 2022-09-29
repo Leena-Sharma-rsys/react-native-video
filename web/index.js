@@ -86,7 +86,6 @@ export default function WebPlayer(props) {
   function playAds() {
     console.log("log ", videoContent, google.ima)
     // Initialize the container. Must be done via a user action on mobile devices.
-    contentRef.current.videoElement.load();
     adDisplayContainer.initialize();
 
     try {
