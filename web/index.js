@@ -3,14 +3,7 @@
 import React, { useState } from 'react';
 import { View, Button } from 'react-native';
 import WebVideo from './video.web'
-// import { VASTClient } from '@dailymotion/vast-client'
-// import { playAds, init } from "./scripting";
-// import "shaka-player/dist/controls.css";
-// import ShakaPlayer from 'shaka-player-react';
-// import shaka from 'shaka-player';
 
-// import 'shaka-player/dist/controls.css';
-// import 'shaka-player-react/dist/controls.css';
 let adsManager;
 let adsLoader;
 let adDisplayContainer;
@@ -161,7 +154,6 @@ export default function WebPlayer(props) {
       case window.google.ima.AdEvent.Type.COMPLETE:
         {
           adContainerRef.current.style.display = "none"
-
           contentRef.current.videoElement.play();
           if (ad.isLinear()) {
             clearInterval(intervalTimer);
@@ -206,24 +198,11 @@ export default function WebPlayer(props) {
     <View>
       <View id="mainContainer" >
         <View>
-        {/* <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> */}
         <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> 
-          {/* <ShakaPlayer
-            src={
-              props.source.uri
-            }
-            ref={contentRef}
-            controls
-            chromeless={true}
-          /> */}
         </View>
         <View ref={adContainerRef} style={{ top: 0, zIndex: 100, position: "absolute", color: 'red' }}></View>
       </View>
       <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()}  title='Play' />
-      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => contentRef.current.videoElement.play()}  title='Play Video' />
-
-      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => contentRef.current.videoElement.pause()}  title='Pause Video' />
-
     </View>
   );
 }
