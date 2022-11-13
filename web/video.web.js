@@ -53,7 +53,12 @@ function WebPlayer(
   React.useEffect(() => {
     if (player && config) {
       console.log('here in confif', config);
-      player.configure(config);
+      player.configure({
+        ...config,
+        streaming: {
+          bufferingGoal: 120
+        }
+      });
     }
   }, [player, config]);
 
@@ -98,7 +103,7 @@ function WebPlayer(
     }),
     [player, ui],
   );
-    console.log('refereomh ', ref, videoRef)
+
   return (
     <div ref={uiContainerRef} className={className}>
       <video

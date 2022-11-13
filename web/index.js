@@ -188,21 +188,31 @@ export default function WebPlayer(props) {
   }
 
   React.useEffect(() => {
-    if (adsLoader) {
-      return
-    }
-    init()
+    // if (adsLoader) {
+    //   return
+    // }
+    // init()
   }, [])
-
+  console.log('contentRef', contentRef)
   return (
     <View>
       <View id="mainContainer" >
-        <View>
-        <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> 
-        </View>
-        <View ref={adContainerRef} style={{ top: 0, zIndex: 100, position: "absolute", color: 'red' }}></View>
+        {/* <View> */}
+        <WebVideo 
+          {...props.webConfig} 
+          autoPlay={props.autoplay} 
+          onLoad={(e)=> console.log('on LOad',e)} 
+          ref={contentRef} 
+          onLoadStart={(e)=> console.log('on LOad start',e)}
+          onLoadedData={(e)=> console.log('on onloadeddata start',e)}
+          onLoadedMetadata={(e)=> console.log('on load mettttttttaa start',e)}
+          src={props.source.uri} 
+          controls={props.controls} 
+        /> 
+        {/* </View> */}
+        {/* <View ref={adContainerRef} style={{ top: 0, zIndex: 100, position: "absolute", color: 'red' }}></View> */}
       </View>
-      <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()}  title='Play' />
+      {/* <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()}  title='Play' /> */}
     </View>
   );
 }
