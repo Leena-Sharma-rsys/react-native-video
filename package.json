@@ -42,7 +42,8 @@
         "prop-types": "^15.7.2",
         "shaka-player": "^3.3.4",
         "shaka-player-react": "^1.1.5",   
-        "react-native-web": "0.17.7"
+        "react-native-web": "0.17.7",
+        "lodash": "^4.16.4"
     },
     "scripts": {
         "lint": "yarn eslint *.js"
