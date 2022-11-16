@@ -1,15 +1,18 @@
 // import React, {Component} from 'react';
 // import { Platform} from 'react-native';
-// import AppAndroidPlayer from './Video.App';
+// import AppPlayer from './Video.App';
+// console.log("Platform.OS", Platform.OS)
+// // const Module = Platform.OS === 'web' ? require('./Video.web') : require('./Video.App')
 
-// export default class AndroidPlayer extends Component {
+// export default class Player extends Component {
 //   constructor(props) {
 //     super(props);
 //     this.state = {};
 //   }
 
 //   render() {
-//     return <AppAndroidPlayer {...this.props} />
+//       return <AppPlayer  {...this.props}/>
+    
 //   }
 // }
 
@@ -27,10 +30,11 @@ import {
   Image,
   View,
   Text,
+  Platform
 } from 'react-native';
 import padStart from 'lodash/padStart';
 
-export default class VideoPlayer extends Component {
+export default class VideoPlayerIos extends Component {
   static defaultProps = {
     toggleResizeModeOnFullscreen: true,
     controlAnimationTiming: 500,
@@ -976,7 +980,7 @@ export default class VideoPlayer extends Component {
             {backControl}
             <View style={styles.controls.pullRight}>
               {volumeControl}
-              {fullscreenControl}
+              {!Platform.isTV && fullscreenControl}
             </View>
           </SafeAreaView>
         </ImageBackground>
@@ -1210,6 +1214,11 @@ export default class VideoPlayer extends Component {
    * Provide all of our options and render the whole component.
    */
   render() {
+    if(Platform.isTV){
+      return (
+        <Video {...this.props} />
+      )
+    }
     return (
       <TouchableWithoutFeedback
         onPress={this.events.onScreenTouch}
@@ -1448,4 +1457,3 @@ const styles = {
     },
   }),
 };
-
