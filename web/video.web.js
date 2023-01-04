@@ -92,27 +92,35 @@
 // export default React.forwardRef(ShakaPlayer);
 
 
-import React from 'react';
-import shaka from 'shaka-player/dist/shaka-player.ui';
-import 'shaka-player/dist/controls.css';
+import shaka from "shaka-player/dist/shaka-player.ui";
+import React from "react";
+import { CustomAdsManager } from "./customAd/adsManager";
 
 /**
  * A React component for shaka-player.
  * @param {string} src
- * @param {shaka.extern.PlayerConfiguration} coßnfig
+ * @param {shaka.extern.PlayerConfiguration} config
  * @param {boolean} autoPlay
- * @param {object} headers
  * @param {number} width
  * @param {number} height
  * @param ref
  * @returns {*}
  * @constructor
  */
-function WebPlayer(
-  {src, config, chromeless, className, headers, ...rest},
-  ref,
+var videoElement;
+const eventList = [
+  "firstQuartile",
+  "midpoint",
+  "thirdQuartile",
+  "start",
+  "complete",
+];
+function ShakaPlayer(
+  { src, config, chromeless, className, onLoaded, trackingJson, ...rest },
+  ref
 ) {
   const uiContainerRef = React.useRef(null);
+  const adUiRef = React.useRef(null);
   const videoRef = React.useRef(null);
 
   const [player, setPlayer] = React.useState(null);
@@ -122,6 +130,17 @@ function WebPlayer(
   // Not related to the src prop, this hook creates a shaka.Player instance.
   // This should always be the first effect to run.
   React.useEffect(() => {
+    // videoElement = document.getElementById("video");
+    shaka.Player.setAdManagerFactory(
+      () =>
+        new CustomAdsManager(
+          adUiRef.current,
+          videoRef.current,
+          trackingJson,
+          eventList
+        )
+    );
+
     const player = new shaka.Player(videoRef.current);
     setPlayer(player);
 
@@ -130,7 +149,7 @@ function WebPlayer(
       const ui = new shaka.ui.Overlay(
         player,
         uiContainerRef.current,
-        videoRef.current,
+        videoRef.current
       );
       setUi(ui);
     }
@@ -146,33 +165,32 @@ function WebPlayer(
   // Keep shaka.Player.configure in sync.
   React.useEffect(() => {
     if (player && config) {
-      console.log('here in confif', config);
-      player.configure(config);
+      player.configure({
+        ...config,
+      });
     }
   }, [player, config]);
 
-  React.useEffect(() => {
-    if (player && headers) {
-      player
-        .getNetworkingEngine()
-        .registerRequestFilter(function (type, request) {
-          console.log(
-            'type',
-            type,
-            shaka.net.NetworkingEngine.RequestType.LICENSE,
-          );
-          if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
-            request.headers[Object.keys(headers)[0]] =
-              Object.values(headers)[0];
-          }
-        });
-    }
-  }, [player, headers]);
-
   // Load the source url when we have one.
+
   React.useEffect(() => {
     if (player && src) {
-      player.load(src);
+      videoRef.current.addEventListener("loadeddata", (e) => {
+        console.log("loaded url", e);
+        onLoaded(e);
+      });
+      eventList.forEach((event) => {
+        videoRef.current.addEventListener(event, (e) => {
+          console.log("event in player ::: ", e);
+        });
+      });
+
+      player
+        .load(src)
+        .then(() => {})
+        .catch((error) => {
+          console.log("i am error", error);
+        });
     }
   }, [player, src]);
 
@@ -190,21 +208,62 @@ function WebPlayer(
         return videoRef.current;
       },
     }),
-    [player, ui],
+    [player, ui]
   );
-    console.log('refereomh ', ref, videoRef)
+
   return (
     <div ref={uiContainerRef} className={className}>
       <video
         ref={videoRef}
+        className="video-js"
         style={{
-          maxWidth: '100%',
-          width: '100%',
+          maxWidth: "100%",
+          width: "100%",
         }}
+        autoPlay={true}
         {...rest}
       />
+      <div
+        ref={adUiRef}
+        style={{
+          // alignItems: "center",
+          // justifyContent: "center",
+          position: "absolute",
+          zIndex: 1,
+          bottom: -2,
+          left: "2%",
+          width: "96%",
+          alignSelf: "center",
+          display: "none",
+        }}
+        id="ad-ui-outer"
+      >
+        <span
+          id={"ad-counter"}
+          style={{ color: "white", marginBottom: 2, width: "50%" }}
+        ></span>
+        <button id="pause" style={{ display: "none" }}>
+          Pause
+        </button>
+
+        <div id="ad-ui"></div>
+      </div>
+      <button
+        id="skipAd"
+        style={{
+          position: "absolute",
+          zIndex: 1,
+          bottom: "5%",
+          alignSelf: "center",
+          right: 0,
+          display: "none",
+        }}
+        onClick={() => player.getAdManager().dismiss()}
+      >
+        SKIP AD
+      </button>
     </div>
   );
 }
 
-export default React.forwardRef(WebPlayer);
+export default React.forwardRef(ShakaPlayer);

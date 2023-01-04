@@ -361,6 +361,7 @@ class ReactExoplayerView extends FrameLayout implements
      * Initializing Player control
      */
     private void initializePlayerControl() {
+        Log.d("here in initializePlayerControl")
         if (playerControlView == null) {
             playerControlView = new PlayerControlView(getContext());
         }
@@ -500,6 +501,7 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     private void initializePlayer() {
+        Log.d("here in initializePlayer")
         ReactExoplayerView self = this;
         Activity activity = themedReactContext.getCurrentActivity();
         // This ensures all props have been settled, to avoid async racing conditions.
