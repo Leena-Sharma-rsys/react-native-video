@@ -131,15 +131,15 @@ function ShakaPlayer(
   // This should always be the first effect to run.
   React.useEffect(() => {
     // videoElement = document.getElementById("video");
-    shaka.Player.setAdManagerFactory(
-      () =>
-        new CustomAdsManager(
-          adUiRef.current,
-          videoRef.current,
-          trackingJson,
-          eventList
-        )
-    );
+    // shaka.Player.setAdManagerFactory(
+    //   () =>
+    //     new CustomAdsManager(
+    //       adUiRef.current,
+    //       videoRef.current,
+    //       trackingJson,
+    //       eventList
+    //     )
+    // );
 
     const player = new shaka.Player(videoRef.current);
     setPlayer(player);
@@ -179,11 +179,11 @@ function ShakaPlayer(
         console.log("loaded url", e);
         onLoaded(e);
       });
-      eventList.forEach((event) => {
-        videoRef.current.addEventListener(event, (e) => {
-          console.log("event in player ::: ", e);
-        });
-      });
+      // eventList.forEach((event) => {
+      //   videoRef.current.addEventListener(event, (e) => {
+      //     console.log("event in player ::: ", e);
+      //   });
+      // });
 
       player
         .load(src)
