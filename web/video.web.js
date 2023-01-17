@@ -162,7 +162,7 @@ function ShakaPlayer(
         ui.destroy();
       }
     };
-  }, [chromeless]);
+  }, [chromeless, trackingJson]);
 
   // Keep shaka.Player.configure in sync.
   React.useEffect(() => {
