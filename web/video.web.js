@@ -94,7 +94,7 @@
 
 import shaka from "shaka-player/dist/shaka-player.ui";
 import React from "react";
-import { CustomAdsManager } from "./customAd/adsManager";
+// import { CustomAdsManager } from "./customAd/adsManager";
 
 /**
  * A React component for shaka-player.
@@ -104,6 +104,8 @@ import { CustomAdsManager } from "./customAd/adsManager";
  * @param {number} width
  * @param {number} height
  * @param ref
+ * @param {boolean} chromeless
+ * @param {function} onLoaded
  * @returns {*}
  * @constructor
  */
