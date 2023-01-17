@@ -162,7 +162,7 @@ function ShakaPlayer(
         ui.destroy();
       }
     };
-  }, []);
+  }, [chromeless]);
 
   // Keep shaka.Player.configure in sync.
   React.useEffect(() => {
@@ -194,7 +194,7 @@ function ShakaPlayer(
           console.log("i am error", error);
         });
     }
-  }, [player, src]);
+  }, [player, src, onLoaded]);
 
   // Define a handle for easily referencing Shaka's player & ui API's.
   React.useImperativeHandle(
@@ -228,8 +228,6 @@ function ShakaPlayer(
       <div
         ref={adUiRef}
         style={{
-          // alignItems: "center",
-          // justifyContent: "center",
           position: "absolute",
           zIndex: 1,
           bottom: -2,
