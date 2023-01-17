@@ -32,6 +32,7 @@
     },
     "files": [
         "android",
+        "android-exoplayer",
         "ios",
         "windows",
         "FilterType.js",
