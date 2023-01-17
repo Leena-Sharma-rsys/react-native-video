@@ -50,4 +50,8 @@ function resume_clock(endTime) {
   }
 }
 
-export { resume_clock, pause_clock, currentCountDowntime };
+function setCountDownTime(time) {
+  currentCountDowntime = time;
+}
+
+export { resume_clock, pause_clock, currentCountDowntime, setCountDownTime };

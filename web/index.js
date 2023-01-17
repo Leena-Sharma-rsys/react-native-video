@@ -233,7 +233,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import shaka from "shaka-player/dist/shaka-player.media";
 // import { Text, View, TouchableOpacity } from "react-native";
-import Video from "./VideoWeb";
+import Video from "./video.web";
 const baseUrl =
   "https://e2f9de5d62b647428fb652c48267a777.mediatailor.us-west-2.amazonaws.com";
 const mpd_asset_id =

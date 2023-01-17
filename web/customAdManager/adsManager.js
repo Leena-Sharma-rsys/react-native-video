@@ -1,5 +1,5 @@
 var ProgressBar = require("progressbar.js");
-var { resume_clock } = require("./timeUtil");
+var { resume_clock, setCountDownTime } = require("./timeUtil");
 
 const stringToSec = (timeString) => {
   const arr = timeString.split(":");
@@ -155,7 +155,13 @@ export class CustomAdsManager {
           ) {
             if (this.video_.controls) {
               this.video_.controls = false;
-
+              //start
+              console.log("this.video paused", this.video_.paused);
+              if (this.video_.paused) {
+                setCountDownTime(currentTime - timeObj[time].start);
+                this.video_.play();
+              }
+              //end
               if (parseInt(timeObj[time].end) !== currentTime) {
                 const el = document.getElementById("pause");
                 el.onclick = resume_clock(parseInt(timeObj[time].duration));
