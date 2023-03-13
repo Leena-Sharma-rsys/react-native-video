@@ -208,7 +208,7 @@
 //       <View id="mainContainer" >
 //         <View>
 //         {/* <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> */}
-//         <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> 
+//         <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} />
 //           {/* <ShakaPlayer
 //             src={
 //               props.source.uri
@@ -230,55 +230,55 @@
 // }
 
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 // import shaka from "shaka-player/dist/shaka-player.media";
 // import { Text, View, TouchableOpacity } from "react-native";
-import Video from "./video.web";
+import Video from './video.web';
 const baseUrl =
-  "https://e2f9de5d62b647428fb652c48267a777.mediatailor.us-west-2.amazonaws.com";
+  'https://e2f9de5d62b647428fb652c48267a777.mediatailor.us-west-2.amazonaws.com';
 const mpd_asset_id =
-  "b9ae3db57338421f986cc028c88d1f40/64c179c9a6b04128ab4105d723012382/c2fa5c88342340349588b8dc8a73f0c4/index.mpd";
+  'b9ae3db57338421f986cc028c88d1f40/64c179c9a6b04128ab4105d723012382/c2fa5c88342340349588b8dc8a73f0c4/index.mpd';
 
 const App = (props) => {
   const ref = useRef(null);
 
-  const [manifestUrl, setManifestUrl] = useState("");
+  const [manifestUrl, setManifestUrl] = useState('');
   const [tracking_response, setTrackingResponse] = useState(null);
 
   async function handleMpdApi() {
     const baseAdUrl = `${baseUrl}/v1/session/9a39c1f787063acfe5de4814e922e22605c1572d/skipAdTest/${mpd_asset_id}`;
     await fetch(baseAdUrl, {
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         adsParams: {
-          deviceType: "ipad",
+          deviceType: 'ipad',
         },
       }),
     })
       .then((response) => {
-        if (!response.ok) throw Error(response.statusText);
+        if (!response.ok) {throw Error(response.statusText);}
         return response.json();
       })
       .then(async (data) => {
         const manifest_url = `${baseUrl}${data.manifestUrl}`;
         const tracking_url = `${baseUrl}${data.trackingUrl}`;
         await fetch(manifest_url).then((response) => {
-          if (!response.ok) throw Error(response.statusText);
+          if (!response.ok) {throw Error(response.statusText);}
           return response.text();
         });
         const tracking_response = await fetch(tracking_url).then((response) => {
-          if (!response.ok) throw Error(response.statusText);
+          if (!response.ok) {throw Error(response.statusText);}
           return response.json();
         });
         setTrackingResponse(tracking_response);
         setManifestUrl(manifest_url);
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log('error', error);
       });
   }
 
@@ -286,7 +286,7 @@ const App = (props) => {
     handleMpdApi();
   }, []);
 
-  if (manifestUrl === "") {
+  if (manifestUrl === '') {
     return <div />;
   }
 
@@ -319,10 +319,10 @@ const App = (props) => {
             }
           }
           ref.current.videoElement.currentTime = result;
-          console.log("result seeking to", result);
+          console.log('result seeking to', result);
         }}
         trackingJson={tracking_response}
-        onError={(e) => console.log("erroe")}
+        onError={(e) => console.log('erroe')}
       />
     </div>
   );
