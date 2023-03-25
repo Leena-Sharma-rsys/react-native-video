@@ -11,16 +11,16 @@
     "devDependencies": {
         "@react-native-community/eslint-config": "^0.0.5",
         "eslint": "^6.5.1",
-        "react": "18.0.0",
-        "react-dom": "18.0.0",
-        "react-native": "0.69.6",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.66.3",
         "react-native-web": "0.17.7"
     },
     "dependencies": {
         "deprecated-react-native-prop-types": "^2.2.0",
         "keymirror": "^0.1.1",
         "prop-types": "^15.7.2",
-        "react-dom": "18.0.0",
+        "react-dom": "17.0.2",
         "react-native-web": "0.17.7",
         "shaka-player": "4.2.7",
         "shaka-player-react": "^1.1.5",
