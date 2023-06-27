@@ -1,0 +1,332 @@
+
+
+// import React, { useState } from 'react';
+// import { View, Button } from 'react-native';
+// import WebVideo from './video.web'
+// // import { VASTClient } from '@dailymotion/vast-client'
+// // import { playAds, init } from "./scripting";
+// // import "shaka-player/dist/controls.css";
+// // import ShakaPlayer from 'shaka-player-react';
+// // import shaka from 'shaka-player';
+
+// // import 'shaka-player/dist/controls.css';
+// // import 'shaka-player-react/dist/controls.css';
+// let adsManager;
+// let adsLoader;
+// let adDisplayContainer;
+// let intervalTimer;
+// let playButton;
+// let videoContent;
+
+// export default function WebPlayer(props) {
+//   const adContainerRef = React.useRef(null);
+//   const contentRef = React.useRef(null);
+//   let [mainPlayer, setMainPlayer] = useState({});
+
+//   function init() {
+//     videoContent = contentRef.current;
+//     // videoContent = document.getElementById('contentElement');
+//     // playButton = document.getElementById('playButton');
+//     // playButton.addEventListener('onclick', this.playAds);
+//     setUpIMA();
+//   }
+
+//   function setUpIMA() {
+//     // console.log('window.google', new window.google)
+//     console.log('videoContent', videoContent, contentRef)
+//     // Create the ad display container.
+//     createAdDisplayContainer();
+//     // Create ads loader.
+
+//     adsLoader = new window.google.ima.AdsLoader(adDisplayContainer);
+//     // Listen and respond to ads loaded and error events.
+//     console.log('adsLoader', adsLoader)
+
+//     adsLoader.addEventListener(
+//       window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+//       onAdsManagerLoaded, false);
+//     adsLoader.addEventListener(
+//       onAdError, false);
+
+//     // An event listener to tell the SDK that our content video
+//     // is completed so the SDK can play any post-roll ads.
+//     const contentEndedListener = () => {
+//       adsLoader.contentComplete();
+//     };
+//     contentRef.current.videoElement.onended = contentEndedListener;
+//     // Request video ads.
+//     const adsRequest = new window.google.ima.AdsRequest();
+//     // adsRequest.adTagUrl = props.webConfig.adsUrl;
+//     adsRequest.adTagUrl = `https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/simid&description_url=https%3A%2F%2Fdevelopers.google.com%2Finteractive-media-ads&sz=640x480&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`
+//     // Specify the linear and nonlinear slot sizes. This helps the SDK to
+//     // select the correct creative if multiple are returned.
+//     adsRequest.linearAdSlotWidth = window.screen.availWidth;
+//     adsRequest.linearAdSlotHeight = window.screen.availheight - window.screen.availTop;
+
+//     adsRequest.nonLinearAdSlotWidth = window.screen.availWidth;
+//     adsRequest.nonLinearAdSlotHeight = window.screen.availheight - window.screen.availTop;
+
+//     adsLoader.requestAds(adsRequest);
+//   }
+
+//   /**
+//  * Sets the 'adContainer' div as the IMA ad display container.
+//  */
+//   function createAdDisplayContainer() {
+//     // We assume the adContainer is the DOM id of the element that will house
+//     // the ads.
+//     adDisplayContainer = new window.google.ima.AdDisplayContainer(
+//       adContainerRef.current, contentRef.current);
+//     console.log("adDisplayContainer", adDisplayContainer)
+//   }
+
+//   /**
+//    * Loads the video content and initializes IMA ad playback.
+//    */
+//   function playAds() {
+//     console.log("log ", videoContent, google.ima)
+//     // Initialize the container. Must be done via a user action on mobile devices.
+//     contentRef.current.videoElement.load();
+//     adDisplayContainer.initialize();
+
+//     try {
+//       // Initialize the ads manager. Ad rules playlist will start at this time.
+//       adsManager.init(window.screen.availWidth, window.screen.availHeight - window.screen.availTop, google.ima.ViewMode.NORMAL);
+//       // Call play to start showing the ad. Single video and overlay ads will
+//       // start at this time; the call will be ignored for ad rules.
+//       adsManager.start();
+//     } catch (adError) {
+//       console.log("here in error", adError)
+//       // An error may be thrown if there was a problem with the VAST response.
+//       contentRef.current.videoElement.play();
+//     }
+//   }
+
+//   /**
+//    * Handles the ad manager loading and sets ad event listeners.
+//    * @param {!window.google.ima.AdsManagerLoadedEvent} adsManagerLoadedEvent
+//    */
+//   function onAdsManagerLoaded(adsManagerLoadedEvent) {
+//     // Get the ads manager.
+//     console.log("her in onAdsManagerLoaded", adsManagerLoadedEvent)
+//     const adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
+//     adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+//     // videoContent should be set to the content video element.
+//     adsManager =
+//       adsManagerLoadedEvent.getAdsManager(contentRef.current, adsRenderingSettings);
+//     console.log("her in onAdsManagerLoaded adsManager", adsManager, adsRenderingSettings, window.google.ima.AdEvent)
+
+//     // Add listeners to the required events.
+//     adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, onAdError);
+//     adsManager.addEventListener(
+//       window.google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED, onContentPauseRequested);
+//     adsManager.addEventListener(
+//       window.google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
+//       onContentResumeRequested);
+//     adsManager.addEventListener(
+//       window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED, onAdEvent);
+
+//     // Listen to any additional events, if necessary.
+//     adsManager.addEventListener(window.google.ima.AdEvent.Type.LOADED, onAdEvent);
+//     adsManager.addEventListener(window.google.ima.AdEvent.Type.STARTED, onAdEvent);
+//     adsManager.addEventListener(window.google.ima.AdEvent.Type.COMPLETE, onAdEvent);
+//   }
+
+//   /**
+//    * Handles actions taken in response to ad events.
+//    * @param {!window.google.ima.AdEvent} adEvent
+//    */
+//   function onAdEvent(adEvent) {
+//     // Retrieve the ad from the event. Some events (e.g. ALL_ADS_COMPLETED)
+//     // don't have ad object associated.
+//     // console.log("here in adEvent", adEvent)
+//     const ad = adEvent.getAd();
+//     switch (adEvent.type) {
+//       case window.google.ima.AdEvent.Type.LOADED:
+//         if (!ad.isLinear()) {
+//           contentRef.current.videoElement.play();
+//         }
+//         break;
+//       case window.google.ima.AdEvent.Type.STARTED:
+//         if (ad.isLinear()) {
+//           // For a linear ad, a timer can be started to poll for
+//           // the remaining time.
+//           intervalTimer = setInterval(
+//             () => {
+//               // Example: const remainingTime = adsManager.getRemainingTime();
+//             },
+//             300);  // every 300ms
+//         }
+//         break;
+//       case window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
+//       case window.google.ima.AdEvent.Type.COMPLETE:
+//         {
+//           adContainerRef.current.style.display = "none"
+
+//           contentRef.current.videoElement.play();
+//           if (ad.isLinear()) {
+//             clearInterval(intervalTimer);
+//           }
+//           break;
+//         }
+//     }
+//   }
+
+//   /**
+//    * Handles ad errors.
+//    * @param {!window.google.ima.AdErrorEvent} adErrorEvent
+//    */
+//   function onAdError(adErrorEvent) {
+//     console.log(adErrorEvent.getError());
+//     adsManager.destroy();
+//   }
+
+//   /**
+//    * Pauses video content and sets up ad UI.
+//    */
+//   function onContentPauseRequested() {
+//     // console.log("contentRef check", contentRef.current)
+//     contentRef.current.videoElement.pause();
+//   }
+
+//   /**
+//    * Resumes video content and removes ad UI.
+//    */
+//   function onContentResumeRequested() {
+//     contentRef.current.videoElement.play();
+//   }
+
+//   React.useEffect(() => {
+//     if (adsLoader) {
+//       return
+//     }
+//     init()
+//   }, [])
+
+//   return (
+//     <View>
+//       <View id="mainContainer" >
+//         <View>
+//         {/* <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} /> */}
+//         <WebVideo {...props.webConfig} ref={contentRef} src={props.source.uri} controls={props.controls} />
+//           {/* <ShakaPlayer
+//             src={
+//               props.source.uri
+//             }
+//             ref={contentRef}
+//             controls
+//             chromeless={true}
+//           /> */}
+//         </View>
+//         <View ref={adContainerRef} style={{ top: 0, zIndex: 100, position: "absolute", color: 'red' }}></View>
+//       </View>
+//       <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => playAds()}  title='Play' />
+//       <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => contentRef.current.videoElement.play()}  title='Play Video' />
+
+//       <Button style={{ zIndex: 100, position: "absolute", color: 'red' }} onPress={() => contentRef.current.videoElement.pause()}  title='Pause Video' />
+
+//     </View>
+//   );
+// }
+
+
+import React, { useEffect, useRef, useState } from 'react';
+// import shaka from "shaka-player/dist/shaka-player.media";
+// import { Text, View, TouchableOpacity } from "react-native";
+import Video from './video.web';
+const baseUrl =
+  'https://e2f9de5d62b647428fb652c48267a777.mediatailor.us-west-2.amazonaws.com';
+const mpd_asset_id =
+  'b9ae3db57338421f986cc028c88d1f40/64c179c9a6b04128ab4105d723012382/c2fa5c88342340349588b8dc8a73f0c4/index.mpd';
+
+const App = (props) => {
+  const ref = useRef(null);
+
+  const [manifestUrl, setManifestUrl] = useState('');
+  const [tracking_response, setTrackingResponse] = useState(null);
+
+  async function handleMpdApi() {
+    const baseAdUrl = `${baseUrl}/v1/session/9a39c1f787063acfe5de4814e922e22605c1572d/skipAdTest/${mpd_asset_id}`;
+    await fetch(baseAdUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        adsParams: {
+          deviceType: 'ipad',
+        },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {throw Error(response.statusText);}
+        return response.json();
+      })
+      .then(async (data) => {
+        const manifest_url = `${baseUrl}${data.manifestUrl}`;
+        const tracking_url = `${baseUrl}${data.trackingUrl}`;
+        await fetch(manifest_url).then((response) => {
+          if (!response.ok) {throw Error(response.statusText);}
+          return response.text();
+        });
+        const tracking_response = await fetch(tracking_url).then((response) => {
+          if (!response.ok) {throw Error(response.statusText);}
+          return response.json();
+        });
+        setTrackingResponse(tracking_response);
+        setManifestUrl(manifest_url);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  }
+
+  useEffect(() => {
+    handleMpdApi();
+  }, []);
+
+  if (manifestUrl === '') {
+    return <div />;
+  }
+
+  return (
+    <div style={{ flex: 1 }}>
+      <Video
+        chromeless={true}
+        autoPlay={true}
+        src={manifestUrl}
+        controls={true}
+        ref={ref}
+        muted={true}
+        onLoaded={(e) => {
+          const b = ref.current.videoElement.buffered;
+          const time = ref.current.videoElement.currentTime;
+          const gapTolerance = 0.08;
+          if (!b || !b.length) {
+            return 0;
+          }
+          // Workaround Safari bug: https://bit.ly/2trx6O8
+          if (b.length === -1 && b.end(0) - b.start(0) < 1e-6) {
+            return 0;
+          }
+          let result = 0;
+          if (b.length >= 1) {
+            const end = b.end(0);
+            const start = b.start(0);
+            if (end > time) {
+              result = start + gapTolerance;
+            }
+          }
+          ref.current.videoElement.currentTime = result;
+          console.log('result seeking to', result);
+        }}
+        trackingJson={tracking_response}
+        onError={(e) => console.log('erroe')}
+      />
+    </div>
+  );
+};
+
+export default App;
+
